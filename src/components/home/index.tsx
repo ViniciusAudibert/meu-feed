@@ -1,4 +1,3 @@
-import React from 'react'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
@@ -38,7 +37,7 @@ const styles = (theme: Theme) =>
 
 export interface ContentProps extends WithStyles<typeof styles> {}
 
-function Content(props: ContentProps) {
+function HomeComponent(props: ContentProps) {
   const { classes } = props
 
   return (
@@ -81,4 +80,4 @@ function Content(props: ContentProps) {
   )
 }
 
-export default withStyles(styles)(Content)
+export const Home = withStyles(styles)(HomeComponent)

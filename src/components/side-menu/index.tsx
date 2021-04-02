@@ -8,38 +8,11 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import HomeIcon from '@material-ui/icons/Home'
-import PeopleIcon from '@material-ui/icons/People'
-import DnsRoundedIcon from '@material-ui/icons/DnsRounded'
-import PermMediaOutlinedIcon from '@material-ui/icons/PhotoSizeSelectActual'
-import PublicIcon from '@material-ui/icons/Public'
-import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet'
-import SettingsInputComponentIcon from '@material-ui/icons/SettingsInputComponent'
-import TimerIcon from '@material-ui/icons/Timer'
-import SettingsIcon from '@material-ui/icons/Settings'
-import PhonelinkSetupIcon from '@material-ui/icons/PhonelinkSetup'
+
 import { Omit } from '@material-ui/types'
-import { Logo } from './logo'
-const categories = [
-  {
-    id: 'Develop',
-    children: [
-      { id: 'Authentication', icon: <PeopleIcon />, active: true },
-      { id: 'Database', icon: <DnsRoundedIcon /> },
-      { id: 'Storage', icon: <PermMediaOutlinedIcon /> },
-      { id: 'Hosting', icon: <PublicIcon /> },
-      { id: 'Functions', icon: <SettingsEthernetIcon /> },
-      { id: 'ML Kit', icon: <SettingsInputComponentIcon /> },
-    ],
-  },
-  {
-    id: 'Quality',
-    children: [
-      { id: 'Analytics', icon: <SettingsIcon /> },
-      { id: 'Performance', icon: <TimerIcon /> },
-      { id: 'Test Lab', icon: <PhonelinkSetupIcon /> },
-    ],
-  },
-]
+import { Logo } from '../logo'
+import { SideMenuConfigs } from './configs'
+import { Submenu } from './submenu'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -83,9 +56,9 @@ const styles = (theme: Theme) =>
     },
   })
 
-export interface NavigatorProps extends Omit<DrawerProps, 'classes'>, WithStyles<typeof styles> {}
+export interface Props extends Omit<DrawerProps, 'classes'>, WithStyles<typeof styles> {}
 
-function Navigator(props: NavigatorProps) {
+function SideMenuComponent(props: Props) {
   const { classes, ...other } = props
 
   return (
@@ -106,7 +79,7 @@ function Navigator(props: NavigatorProps) {
             Project Overview
           </ListItemText>
         </ListItem>
-        {categories.map(({ id, children }) => (
+        {SideMenuConfigs.map(({ id, children }) => (
           <React.Fragment key={id}>
             <ListItem className={classes.categoryHeader}>
               <ListItemText
@@ -117,17 +90,9 @@ function Navigator(props: NavigatorProps) {
                 {id}
               </ListItemText>
             </ListItem>
-            {children.map(({ id: childId, icon, active }) => (
-              <ListItem key={childId} button className={clsx(classes.item, active && classes.itemActiveItem)}>
-                <ListItemIcon className={classes.itemIcon}>{icon}</ListItemIcon>
-                <ListItemText
-                  classes={{
-                    primary: classes.itemPrimary,
-                  }}
-                >
-                  {childId}
-                </ListItemText>
-              </ListItem>
+
+            {children.map((item) => (
+              <Submenu key={item.id} {...item} />
             ))}
             <Divider className={classes.divider} />
           </React.Fragment>
@@ -137,4 +102,4 @@ function Navigator(props: NavigatorProps) {
   )
 }
 
-export default withStyles(styles)(Navigator)
+export const SideMenu = withStyles(styles)(SideMenuComponent)
